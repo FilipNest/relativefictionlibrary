@@ -1,0 +1,14 @@
+{
+  "name": "relativefictionlibrary",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "relativefiction": "git+https://github.com/FilipNest/relativefiction.git"
+  }
+}
