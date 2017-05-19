@@ -12,7 +12,7 @@ $.each($(".codeblock"), function (index, inside) {
 
   function getWordsBetweenCurlies(str) {
     var results = [],
-      re = /{([^}]+)}/g,
+      re = /{{([^}}]+)}}/g,
       text;
 
     while (text = re.exec(str)) {
@@ -25,7 +25,7 @@ $.each($(".codeblock"), function (index, inside) {
 
   $.each(tags, function (index, tagcontent) {
 
-    var tag = "{" + tagcontent + "}";
+    var tag = "{{" + tagcontent + "}}";
 
     $(inside).html($(inside)
       .html()

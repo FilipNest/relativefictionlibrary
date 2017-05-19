@@ -29,7 +29,7 @@
   <div class="codeblock">
 
     <div class="inner">
-      I love {dayofweek}s. It was around {hour12}{ampm} on a {dayofweek} when I first saw its outlines. I was sitting in {park} and looking out at the sky. It was a {weather} day much like this one. Wings. Clearly a pair of wings. Floating somewhere towards {supermarket street} as if going about their everyday business. This month is even more special. It happened in {monthofyear}. So I walk over to {park} and look out. But there's never anything anymore...
+      I love {{dayofweek}}s. It was around {{hour12}}{{ampm}} on a {{dayofweek}} when I first saw its outlines. I was sitting in {{park}} and looking out at the sky. It was a {{weather}} day much like this one. Wings. Clearly a pair of wings. Floating somewhere towards {{supermarket street}} as if going about their everyday business. This month is even more special. It happened in {{monthofyear}}. So I walk over to {{park}} and look out. But there's never anything anymore...
     </div>
     <button class="localise">Localise</button>
   </div>
@@ -71,7 +71,7 @@
   <p>If you've got how places work this bit should be easy as it's just another pipe character after the ID.</p>
   <div class="codeblock">
     <div class="inner">
-      He lived on {park street}. I never liked that part of town after what happened to Emily.
+      He lived on {{park street}}. I never liked that part of town after what happened to Emily.
     </div>
     <button class="localise">Localise</button>
   </div>
@@ -112,34 +112,42 @@
   </div>
   <small>Various ways of getting times of day. <b>hoursampm</b> returns am if it's before noon and pm if after. It can be offset by adding positive or negative hours after a pipe character. <b>hours24</b> and <b>hours12</b> return the current hour in either 24 hour time or 12 hour time. They can also be offset by positive or negative hours. <b>minutes</b> returns the current time in minutes. Add positive or negative minutes after a pipe to add or subtract minutes from the time.</small>
   <div class="codeblock">
-    It was [monthofyear]. Five years after they caught the fish. I still have the newspaper cuttings from [monthofyear] [dayofmonth][dayofmonthsuffix], [year|-5].
+    <div class="inner">
+      It was {monthofyear}. Five years after they caught the fish. I still have the newspaper cuttings from {monthofyear} {dayofmonthsuffix}, {year - 5 years}.
+    </div>
+    <button class="localise">Localise</button>
   </div>
   <small>Get the current month or current year. You can add a pipe followed by a positive/negative count of months/years to set it forward or back in time. <b>dayofmonth</b> returns the day of the month in number form (you can offset this by days after a pipe character). <b>dayofmonthsuffix</b> gives you the English language suffix for that day "th","st","rd" or "nd". It also works with day offsets</small>
   <div class="codeblock">
-    [longitude],[latitude] said the screen. This was the right place. It's what it said on the paper. But my instinct told me [country] wasn't even the right part of the world.
+    <div class="inner">
+      {longitude},{latitude} said the screen. This was the right place. It's what it said on the paper. But my instinct told me {country} wasn't even the right part of the world.
+    </div>
+    <button class="localise">Localise</button>
   </div>
   <small>Longitude and latitude for those who need it. Also a country name from <a href="http://web.archive.org/web/20161220012354/https://gist.github.com/vxnick/380904">this handy PHP array mapping country codes to names.</a></small>
 
   <div class="codeblock">
-
-    It was a [weather] day like this one when my ears stopped working.
+    <div class="inner">
+      It was a {weather} day like this one when my ears stopped working.
+    </div>
+    <button class="localise">Localise</button>
   </div>
   <small>The reader's current weather. This can return one of the following values: stormy, rainy, snowy, clear, cloudy, calm, windy, scorching, freezing. You can re-write them using conditionals.</small>
 
   <div class="codeblock">
-
-    It could only happen exactly at sunset. [sunsethour] hundred hours. That was [hourstosunset] hours away.
-
+    <div class="inner">
+      It could only happen exactly at sunset. {sunsethour24} hundred hours. That was {hourstosunset} hours away.
+    </div>
+    <button class="localise">Localise</button>
   </div>
   <small>Hour (in 24 hour time) of the next sunset. You can also use <b>hourstosunset</b> to get how much time until the next sunset. Both useful in conditionals.</small>
   <div class="codeblock">
-
-    It could only happen exactly at sunrise. [sunrisehour] hundred hours. That was [hourstosunrise] hours away.
-
+    <div class="inner">
+      It could only happen exactly at sunrise. {sunrisehour12} o clock. That was {hourstosunrise} hours away.
+    </div>
+    <button class="localise">Localise</button>
   </div>
   <small>Same as sunset but for sunrise. See above.</small>
-
-  <p>More variables will come in the future but that should hopefully give you a nice start. Please feel free to suggest some if you feel anything is missing.</p>
 
   <h2>Conditionals</h2>
 
@@ -155,7 +163,7 @@
   <div class="codeblock">
     {if +[sunsethour]&gt;[hours24],+[dayofweek]==Wednesday|You can still catch sunset on Wednesday|You missed Wednesday's sunset}
   </div>
-
+  
   <!-- Scripts -->
 
   <script src="/jquery-3.2.1.min.js"></script>
