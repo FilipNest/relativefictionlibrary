@@ -8,8 +8,6 @@ navigator.geolocation.getCurrentPosition(function (location) {
 
 $.each($(".codeblock"), function (index, inside) {
 
-  var content = $(inside).html();
-
   function getWordsBetweenCurlies(str) {
     var results = [],
       re = /{{([^}}]+)}}/g,
@@ -20,6 +18,30 @@ $.each($(".codeblock"), function (index, inside) {
     }
     return results;
   }
+
+  function ifOpen(str) {
+    var results = [],
+      re = /{{#([^}}]+)}}/g,
+      text;
+
+    while (text = re.exec(str)) {
+      results.push(text[1]);
+    }
+    return results;
+  }
+
+  function ifClose(str) {
+    var results = [],
+      re = /{{\/([^}}]+)}}/g,
+      text;
+
+    while (text = re.exec(str)) {
+      results.push(text[1]);
+    }
+    return results;
+  }
+
+  var content = $(inside).html();
 
   var tags = getWordsBetweenCurlies(content);
 
@@ -33,6 +55,41 @@ $.each($(".codeblock"), function (index, inside) {
       .join("<span class='tag'>" + tag + "</span>"))
 
   });
+
+  var content = $(inside).html();
+
+  var tags = ifOpen(content);
+
+  $.each(tags, function (index, tagcontent) {
+
+    var tag = "{{#" + tagcontent + "}}";
+
+    $(inside).html($(inside)
+      .html()
+      .split(tag)
+      .join("<span class='if'>" + tag + "</span>"))
+
+  });
+
+  var content = $(inside).html();
+
+  var tags = ifClose(content);
+
+  $.each(tags, function (index, tagcontent) {
+
+    var tag = "{{/" + tagcontent + "}}";
+
+    $(inside).html($(inside)
+      .html()
+      .split(tag)
+      .join("<span class='if'>" + tag + "</span>"))
+
+  });
+
+  $(inside).html($(inside)
+    .html()
+    .split("{{else}}")
+    .join("<span class='if'>{{else}}</span>"))
 
 });
 
@@ -73,7 +130,7 @@ $("body").on("click", ".localise", function (e) {
       success: function (result) {
 
         console.log(result);
-        
+
         $.unblockUI(500);
 
         // Put in result

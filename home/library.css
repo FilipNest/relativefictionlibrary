@@ -32,7 +32,7 @@ h1 {
 }
 
 small {
-  margin-right:100px;
+  margin-right: 100px;
   margin-bottom: 20px;
   display: block;
 }
@@ -58,6 +58,11 @@ a:visited {
 .tag {
   background-color: crimson;
   color: white;
+}
+
+.if {
+  color: white;
+  background: blue;
 }
 
 .codeblock button {
