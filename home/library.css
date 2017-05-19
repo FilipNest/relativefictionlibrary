@@ -1,16 +1,68 @@
+html,
+body {
+  padding: 0px;
+  margin: 0px
+}
+
 html {
   font-family: "futura-pt";
 }
 
-html.green {
+nav {
+  top: 0px;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  margin: 0px;
+  color: white;
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  max-width: 100%;
+  line-height: 50px;
+}
+
+nav {
+  position: fixed;
+}
+
+nav ul {
+  padding: 0px;
+  width: 600px;
+  max-width: 100%;
+  margin: auto;
+  text-align: center;
+}
+
+nav li {
+  list-style: none;
+  display: inline-block;
+  padding: 10px;
+  line-height: 100%;
+  vertical-align: middle
+}
+
+nav li.github {
+  color: transparent;
+  position: relative;
+  top: 3px;
+}
+
+nav a.home {
+  color: darkseagreen;
+}
+
+.green {
   background-color: darkseagreen;
 }
 
-body {
+main {
+  position: relative;
+  top: 70px;
   width: 900px;
   margin: auto;
   padding: 20px;
   max-width: 100%;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -40,6 +92,35 @@ small {
 a:link,
 a:visited {
   color: inherit;
+}
+
+#stories li {
+  font-size: 30px;
+  text-align: left;
+  margin-bottom: 20px;
+  word-wrap: break-word
+}
+
+#stories li {
+  line-height: 100%;
+  max-width: 100%;
+}
+
+#stories li a:link {
+  text-decoration: none;
+}
+
+.date {
+  font-size: 15px;
+  display: block;
+}
+
+.author {
+  color: darkseagreen;
+}
+
+.title {
+  font-weight: bold;
 }
 
 

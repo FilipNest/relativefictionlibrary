@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "handlebars": "^4.0.8",
+    "moment": "^2.18.1",
+    "mongodb": "^2.2.26",
     "relativefiction": "git+https://github.com/FilipNest/relativefiction.git"
   }
 }

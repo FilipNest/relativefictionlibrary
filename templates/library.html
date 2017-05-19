@@ -1,0 +1,24 @@
+{{{header}}}
+
+<body>
+
+  <main>
+    <h1>Stories</h1>
+    
+    <p>These original stories were written when the project first launched in 2015. The ability to add your own will come soon.</p>
+    
+    <br />
+
+    <ul id="stories">
+
+      {{#each stories}} <li><a href="/library/{{title}}"><span class="title">{{title}}</span> by <span class="author">{{author}}</span><span class="date">Published on {{displayDate}}</span></a></li> {{/each}}
+
+    </ul>
+
+  </main>
+
+</body>
+
+{{{footer}}}
+
+</html>

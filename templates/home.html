@@ -1,0 +1,150 @@
+{{{header}}}
+
+{{{{raw-helper}}}}
+
+<body class="green">
+  
+  <main>
+
+    <h1>Relative Fiction</h1>
+
+    <p class="subheading">A tool for creating dynamic stories relative to a reader's place, time, location, weather and perhaps more.</p>
+
+    <h2>An example</h2>
+
+    <p>Throughout this page you can tap the <b>Localise</b> buttons to see what a translation of the text would look like where you are. Then hit <b>Reset</b> to go back to the raw text.</p>
+
+    <div class="codeblock">
+
+      <div class="inner">
+        I love {{dayofweek}}s. It was around {{hour12}}{{ampm}} on a {{dayofweek}} when I first saw its outlines. I was sitting in {{park}} and looking out at the sky. It was a {{weather}} day much like this one. Wings. Clearly a pair of wings. Floating somewhere towards {{supermarket street}} as if going about their everyday business. This month is even more special. It happened in {{monthofyear}}. So I walk over to {{park}} and look out. But there's never anything anymore...
+      </div>
+      <button class="localise">Localise</button>
+    </div>
+
+    <h2>How it works</h2>
+
+    <p>A writer writes a story and at certain points, replaces static words like days of the week and place names with special placeholders or <em>variables</em>.</p>
+
+    <p>Alongside variables, writers can put in logic to show text if some statements are true and some other text if they are not.</p>
+
+    <div class="codeblock">
+      <div class="inner">
+        {{#more (hour24) 12}} It was a {{weather}} {{dayofweek}} afternoon. Georgina was tired. {{else}} It was a {{weather}} {{dayofweek}} morning. Georgina was hungry. {{/more}}
+      </div>
+      <button class="localise">Localise</button>
+    </div>
+    <br />
+
+    <p>Once a reader starts reading a story and agrees to share their location (longitude and latitude picked up through their web browser), all relevant data is collected and swapped out to make a story that is unique to that reader but still keeps the original essense of the story.</p>
+
+    <p>Data for places is pulled in from <a href="http://foursquare.com/">Foursquare</a>, a wonderful place-based social network and directory. Data for weather and sunset and sunrise times is brought in from the kind people who run <a href="http://openweathermap.org/">OpenWeatherMap</a>.</p>
+
+    <h2>Types of variable</h2>
+    <h3>Places</h3>
+    <p>To put a place in your story, a zoo or japanese restaurant for example, first look up the name of the category of place on <a href="https://developer.foursquare.com/categorytree">this list of place categories from Foursquare</a> to make sure it's available.
+      <p>Next, enclose the name of the category in double curly brackets.</p>
+
+      <div class="codeblock">
+        <div class="inner">
+          We went out for a few drinks at {{nightclub}} and somehow ended up naked and shivering in the waters of the {{river}}
+        </div>
+        <button class="localise">Localise</button>
+      </div>
+      <small>You can add a space and a number like {{park 2}} {{park 1}} in order to fetch multiple parks and refer to them.</small>
+
+      <small>The locations will get swapped out by the location of that category nearest to the reader.</small>
+      <h3>Other information about places</h3>
+      <p>You might want to use other information about a place, like the street it's on or how far away it is from the reader.</p>
+      <div class="codeblock">
+        <div class="inner">
+          He lived on {{park street}}. I never liked that part of town after what happened to Emily.
+        </div>
+        <button class="localise">Localise</button>
+      </div>
+      <small>Putting the word "street" after the pipe will get translated to the street the venue is on. Parts of street names containing numbers are stripped out (11,33b...). If there's no street set it defaults to "The Street".</small>
+
+      <div class="codeblock">
+        <div class="inner">
+          She arranged to meet me at {{zoo}}. For some reason she never wanted to see me more than {{zoo distance}} meters from an animal park.
+        </div>
+        <button class="localise">Localise</button>
+      </div>
+      <small>Distance in meters from a reader's location to a place. Useful for conditionals like if you want to find out how far someone is from the sea.</small>
+
+      <div class="codeblock">
+        <div class="inner">
+          I love coming back to the smell of {{park city}}. It reminds me of that night in {{chinese-restaurant}} all those years ago.
+        </div>
+        <button class="localise">Localise</button>
+      </div>
+      <small>The city or town the venue is in. Defaults to "The City" if the venue doesn't have one set.</small>
+
+      <h3>Other variables</h3>
+      <p>It's not just places you can swap into text, here are some other variables you can use.</p>
+
+      <div class="codeblock">
+        <div class="inner">
+          It was {{dayofweek}}. She always came round on {{dayofweek}}s. Yesterday would have been better. {{dayofweek minus 1 day}}s were always better than {{dayofweek}}s.
+        </div>
+        <button class="localise">Localise</button>
+      </div>
+      <small>The day of the week. Monday, Tuesday... etc. You can add and substract from times and dates.</small>
+      <div class="codeblock">
+        <div class="inner">
+          {{hour12}}{{ampm}}. If only I had set my alarm to {{hour12 minus 2 hours}}:{{minutes add 30 minutes}}{{ampm minus 1 hour}}. It may have saved my life. The dial read {{hour24}}:{{minutes}} and it was over.
+        </div>
+        <button class="localise">Localise</button>
+      </div>
+      <br />
+
+      <div class="codeblock">
+        <div class="inner">
+          It was {{monthofyear}}. Five years after they caught the fish. I still have the newspaper cuttings from {{monthofyear}} {{dayofmonthsuffix}}, {{year minus 5 years}}.
+        </div>
+        <button class="localise">Localise</button>
+      </div>
+      <br />
+      <div class="codeblock">
+        <div class="inner">
+          {{longitude}},{{latitude}} said the screen. This was the right place. It's what it said on the paper. But my instinct told me {{country}} wasn't even the right part of the world.
+        </div>
+        <button class="localise">Localise</button>
+      </div>
+      <small>Longitude and latitude for those who need it. Also a country code.</small>
+
+      <div class="codeblock">
+        <div class="inner">
+          It was a {{weather}} day like this one when my ears stopped working.
+        </div>
+        <button class="localise">Localise</button>
+      </div>
+      <small>The reader's current weather. This can return one of the following values: stormy, rainy, snowy, clear, cloudy, calm, windy, scorching, freezing. You can re-write them using conditionals.</small>
+
+      <div class="codeblock">
+        <div class="inner">
+          It could only happen exactly at sunset. {{sunsethour24}} hundred hours. That was {{hourstosunset}} hours away.
+        </div>
+        <button class="localise">Localise</button>
+      </div>
+      <br />
+      <div class="codeblock">
+        <div class="inner">
+          It could only happen exactly at sunrise. {{sunrisehour12}}o'clock. That was {{hourstosunrise}} hours away.
+        </div>
+        <button class="localise">Localise</button>
+      </div>
+
+      <h2>Conditionals</h2>
+
+      <p><a href="https://github.com/FilipNest/relativefiction#conditionals">See GitHub documentation</a> or play with the example at the top! You have <b>{{#more}}</b>, <b>{{#less}}</b>, <b>{{#equal}}</b> and <b>{{#not}}</b> to play with.</p>
+
+  </main>
+
+</body>
+
+{{{{/raw-helper}}}}
+
+{{{footer}}}
+
+</html>
