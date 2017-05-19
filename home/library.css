@@ -1,0 +1,75 @@
+html {
+  font-family: "futura-pt";
+}
+
+html.green {
+  background-color: darkseagreen;
+}
+
+body {
+  width: 900px;
+  margin: auto;
+  padding: 20px;
+  max-width: 100%;
+}
+
+h1 {
+  font-size: 5em;
+  margin: 0em;
+  margin-bottom: 0em;
+}
+
+.subheading {
+  margin: 0em;
+  font-size: 2em;
+}
+
+.green h1,
+.green h2,
+.green h3,
+.green p {
+  color: white;
+}
+
+small {
+  margin-right:100px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+a:link,
+a:visited {
+  color: inherit;
+}
+
+
+/* Code blocks for front page */
+
+.codeblock {
+  position: relative;
+  font-family: "Courier New", Courier, monospace;
+  background-color: #F1F1F1;
+  color: black;
+  padding: 10px;
+  margin-bottom: 5px;
+  line-height: 130%;
+}
+
+.tag {
+  background-color: crimson;
+  color: white;
+}
+
+.codeblock button {
+  background-color: black;
+  color: white;
+  border-style: solid;
+  border-color: black;
+  cursor: pointer;
+  margin-top: 10px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 80%;
+  display: block;
+  position: absolute;
+  right: 0px;
+}
