@@ -104,4 +104,13 @@ MongoClient.connect(secrets.mongourl, function (err, db) {
 
   })
 
+  rf.server.get("/editor", function (req, res) {
+
+    res.send(editor({
+      header: header,
+      footer: footer
+    }));
+
+  })
+
 });

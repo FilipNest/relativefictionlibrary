@@ -1,1 +1,48 @@
-{{header}}
+{{{header}}}
+
+<main>
+
+  <p>Type your story below:</p>
+
+  <section id="editor"></section>
+  <button class="preview">Localise</button>
+
+  <p>Your story will appear below after localising (hit the button to localise)</p>
+
+  <div id="errors"></div>
+
+  <section id="story">
+
+    <section id="header"></section>
+
+    <section class="story"></section>
+
+  </section>
+
+</main>
+
+{{{footer}}}
+
+<script src="/codemirror/lib/codemirror.js"></script>
+<script src="/codemirror/addon/mode/simple.js"></script>
+<script src="/codemirror/mode/handlebars/handlebars.js"></script>
+<link rel="stylesheet" href="/codemirror/lib/codemirror.css" />
+
+<style>
+  .CodeMirror {
+    border: 1px solid #eee;
+    height: auto;
+    font-size: 1.5em;
+  }
+
+</style>
+
+<script>
+  var myCodeMirror = CodeMirror(document.getElementById("editor"), {
+    mode: "handlebars",
+
+  });
+
+</script>
+
+</html>

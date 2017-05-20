@@ -122,7 +122,7 @@ var localise = function (text, callback) {
       url: "/",
       data: data,
       success: function (result) {
-
+        
         $("#errors").hide();
 
         if (result.errors.length) {
@@ -142,6 +142,20 @@ var localise = function (text, callback) {
 
   })
 }
+
+$("body").on("click", ".preview", function (e) {
+
+  var value = myCodeMirror.getValue();
+
+  localise(value, function (result) {
+
+    // Put in result
+
+    $(".story").html(result.result);
+
+  })
+
+})
 
 $("body").on("click", ".localise", function (e) {
 
@@ -172,8 +186,6 @@ if ($("#story").length) {
   var text = $(".story").html();
 
   localise(text, function (output) {
-
-    console.log(output);
 
     $(".story").html(output.result);
 

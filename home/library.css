@@ -146,7 +146,8 @@ a:visited {
   background: blue;
 }
 
-.codeblock button {
+.codeblock button,
+.preview {
   background-color: black;
   color: white;
   border-style: solid;
@@ -158,6 +159,11 @@ a:visited {
   display: block;
   position: absolute;
   right: 0px;
+}
+
+.preview {
+  margin-top: 0px;
+  margin-right: 20px;
 }
 
 #story {
@@ -204,6 +210,8 @@ a:visited {
   background-color: red;
   color: white;
   padding: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 @media (max-width:700px) {
