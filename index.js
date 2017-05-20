@@ -4,8 +4,6 @@ var moment = require("moment");
 
 var secrets = require("./secrets.js");
 
-var typogr = require('typogr');
-
 var processStory = function (story) {
 
   story.displayDate = moment.unix(story.date).format('MMMM Do YYYY');
