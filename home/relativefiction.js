@@ -93,23 +93,17 @@ $.each($(".codeblock"), function (index, inside) {
 
 });
 
-$("body").on("click", ".localise", function (e) {
-
-  var button = event.target;
-
-  var block = $(event.target).parent().find(".inner");
-
-  var data = {};
-
-  var rawtext = $.trim($(block).html());
-
-  data.text = $.trim($(block).text());
+var localise = function (text, callback) {
 
   //Get location
   navigator.geolocation.getCurrentPosition(function (location) {
 
-    data.latitude = user.latitude;
-    data.longitude = user.longitude;
+    var data = {};
+
+    data.text = $.trim(text);
+
+    data.latitude = location.coords.latitude;
+    data.longitude = location.coords.longitude;
 
     $.blockUI({
       css: {
@@ -129,24 +123,63 @@ $("body").on("click", ".localise", function (e) {
       data: data,
       success: function (result) {
 
-        console.log(result);
+        $("#errors").hide();
+
+        if (result.errors.length) {
+
+          $("#errors").html(result.errors.join("<br />"));
+
+          $("#errors").show();
+
+        }
 
         $.unblockUI(500);
 
-        // Put in result
+        callback(result);
 
-        $(block).attr("data-raw", rawtext);
-        $(block).html($.parseHTML(result.result));
-        $(block).html($.trim($(block).html()))
-        $(button).attr("class", "reset");
-        $(button).html("Reset");
-
-      },
+      }
     });
+
+  })
+}
+
+$("body").on("click", ".localise", function (e) {
+
+  var button = event.target;
+
+  var block = $(event.target).parent().find(".inner");
+
+  var data = {};
+
+  var rawtext = $.trim($(block).text());
+
+  localise(rawtext, function (result) {
+
+    // Put in result
+
+    $(block).attr("data-raw", rawtext);
+    $(block).html($.parseHTML(result.result));
+    $(block).html($.trim($(block).html()))
+    $(button).attr("class", "reset");
+    $(button).html("Reset");
 
   })
 
 });
+
+if ($("#story").length) {
+
+  var text = $(".story").html();
+
+  localise(text, function (output) {
+
+    console.log(output);
+
+    $(".story").html(output.result);
+
+  })
+
+}
 
 $("body").on("click", ".reset", function (e) {
 

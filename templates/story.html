@@ -2,14 +2,27 @@
 
 <body>
 
-  <main>
+  <main id="story">
+    
+    <div id="errors"></div>
 
-    <h1>{{story.title}}</h1>
+    <section id="heading">
 
-    {{{story.text}}}
+      <h1>{{story.title}}</h1>
+      <h2>By {{story.author}}</h2>
+
+    </section>
+
+    <section class="story">
+
+      {{{story.text}}}
+
+    </section>
 
   </main>
 
 </body>
+
+{{{footer}}}
 
 </html>

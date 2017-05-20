@@ -159,3 +159,66 @@ a:visited {
   position: absolute;
   right: 0px;
 }
+
+#story {
+  margin: auto;
+  max-width: 100%;
+  font-size: 30px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+#heading {
+  border-style: solid;
+  border-width: 0 0 0 4px;
+  margin-right: 10px;
+  margin-top: 100px;
+}
+
+#story h1 {
+  word-break: break-all;
+  margin: 10px 0 10px 0;
+  text-align: right;
+  line-height: 100%;
+}
+
+#story h2 {
+  font-size: 120%;
+  margin: 0px;
+  color: darkseagreen;
+  text-align: right;
+}
+
+#story p:first-of-type:first-letter {
+  float: left;
+  color: darkseagreen;
+  font-size: 80px;
+  line-height: 60px;
+  padding-top: 8px;
+  padding-right: 4px;
+  padding-left: 4px;
+  font-weight: bold;
+}
+
+#errors {
+  display: none;
+  background-color: red;
+  color: white;
+  padding: 10px;
+}
+
+@media (max-width:700px) {
+  #heading {
+    border-style: solid;
+    border-width: 0px 4px 0 0px;
+    margin-right: 0px;
+    margin-left: 10px;
+  }
+  #story h1 {
+    text-align: left;
+    font-size: 150%
+  }
+  #story h2 {
+    text-align: left;
+    font-size: 100%
+  }
+}
