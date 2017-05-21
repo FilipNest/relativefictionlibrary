@@ -1,9 +1,3 @@
-var user = {};
-navigator.geolocation.getCurrentPosition(function (location) {
-  user.latitude = location.coords.latitude;
-  user.longitude = location.coords.longitude;
-});
-
 // Replace all words between curlies 
 
 $.each($(".codeblock"), function (index, inside) {
@@ -122,7 +116,7 @@ var localise = function (text, callback) {
       url: "/",
       data: data,
       success: function (result) {
-        
+
         $("#errors").hide();
 
         if (result.errors.length) {
@@ -139,6 +133,10 @@ var localise = function (text, callback) {
 
       }
     });
+
+  }, function () {
+
+    alert("Being location based, you currently need to give this page access to your location for this to work.")
 
   })
 }
