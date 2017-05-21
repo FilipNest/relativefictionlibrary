@@ -18,99 +18,104 @@ var processStory = function (story) {
 
 }
 
-MongoClient.connect(secrets.mongourl, function (err, db) {
+var fs = require("fs");
 
-  var stories = db.collection('stories');
+// Prepare template files
 
-  var config = {
-    port: 7788,
-    static: __dirname + "/home",
-    foursquareKey: secrets.foursquareKey,
-    foursquareSecret: secrets.foursquareSecret,
-    openWeatherKey: secrets.openWeatherKey
-  };
+var Handlebars = require("handlebars");
 
-  var Handlebars = require("handlebars");
+var header = Handlebars.compile(fs.readFileSync(__dirname + "/templates/header.html", "utf8"))();
+var home = Handlebars.compile(fs.readFileSync(__dirname + "/templates/home.html", "utf8"));
+var library = Handlebars.compile(fs.readFileSync(__dirname + "/templates/library.html", "utf8"));
+var story = Handlebars.compile(fs.readFileSync(__dirname + "/templates/story.html", "utf8"));
+var editor = Handlebars.compile(fs.readFileSync(__dirname + "/templates/editor.html", "utf8"));
+var footer = Handlebars.compile(fs.readFileSync(__dirname + "/templates/footer.html", "utf8"));
 
-  Handlebars.registerHelper('raw-helper', function (options) {
-    return options.fn();
-  });
+setTimeout(function () {
 
-  var rf = require("relativefiction")(config);
+  MongoClient.connect(secrets.mongourl, function (err, db) {
 
-  var fs = require("fs");
+    var stories = db.collection('stories');
 
-  // Prepare template files
+    var config = {
+      port: 7788,
+      static: __dirname + "/home",
+      foursquareKey: secrets.foursquareKey,
+      foursquareSecret: secrets.foursquareSecret,
+      openWeatherKey: secrets.openWeatherKey
+    };
 
-  var header = Handlebars.compile(fs.readFileSync(__dirname + "/templates/header.html", "utf8"))();
-  var home = Handlebars.compile(fs.readFileSync(__dirname + "/templates/home.html", "utf8"));
-  var library = Handlebars.compile(fs.readFileSync(__dirname + "/templates/library.html", "utf8"));
-  var story = Handlebars.compile(fs.readFileSync(__dirname + "/templates/story.html", "utf8"));
-  var editor = Handlebars.compile(fs.readFileSync(__dirname + "/templates/editor.html", "utf8"));
-  var footer = Handlebars.compile(fs.readFileSync(__dirname + "/templates/footer.html", "utf8"));
+    Handlebars.registerHelper('raw-helper', function (options) {
+      return options.fn();
+    });
 
-  rf.server.get("/", function (req, res) {
+    var rf = require("relativefiction")(config);
 
-    res.send(home({
-      header: header,
-      footer: footer
-    }));
+    rf.server.get("/", function (req, res) {
 
-  })
-
-  rf.server.get("/library", function (req, res) {
-
-    stories.find({}).toArray(function (err, docs) {
-
-      var storyList = {};
-
-      docs.forEach(function (story, index) {
-
-        storyList[story.title] = processStory(story);
-
-      })
-
-      res.send(library({
+      res.send(home({
         header: header,
-        footer: footer,
-        stories: storyList
+        footer: footer
       }));
 
     })
 
-  })
+    rf.server.get("/library", function (req, res) {
 
-  rf.server.get("/library/:story", function (req, res) {
+      stories.find({}).toArray(function (err, docs) {
 
-    stories.findOne({
-      title: req.params.story
-    }, function (err, doc) {
+        var storyList = {};
 
-      if (doc) {
+        docs.forEach(function (story, index) {
 
-        res.send(story({
+          storyList[story.title] = processStory(story);
+
+        })
+
+        res.send(library({
           header: header,
           footer: footer,
-          story: processStory(doc)
+          stories: storyList
         }));
 
-      } else {
-
-        res.status(404).send("Not found");
-
-      }
+      })
 
     })
 
-  })
+    rf.server.get("/library/:story", function (req, res) {
 
-  rf.server.get("/editor", function (req, res) {
+      stories.findOne({
+        title: req.params.story
+      }, function (err, doc) {
 
-    res.send(editor({
-      header: header,
-      footer: footer
-    }));
+        if (doc) {
 
-  })
+          res.send(story({
+            header: header,
+            footer: footer,
+            story: processStory(doc)
+          }));
 
-});
+        } else {
+
+          res.status(404).send("Not found");
+
+        }
+
+      })
+
+    })
+
+    rf.server.get("/editor", function (req, res) {
+
+      res.send(editor({
+        header: header,
+        footer: footer
+      }));
+
+    })
+
+  });
+
+}, 1000);
+
