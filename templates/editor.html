@@ -9,7 +9,25 @@
 
   <p>Your story will appear below after localising (hit the button to localise).</p>
 
+  {{#unless story}}
+
   <p>Want to share your story with others? <a style="cursor:pointer;" id="save"><u>Save it to the library</u></a>. You'll be able to edit it later with a special (keep secret) url. You'll be asked for a name, email (only used if you forget your edit link) and title for the story and will be able to edit it later.</p>
+
+  {{else}}
+
+  <!-- Original story -->
+
+  <script>
+    var story = {
+      "title": "{{story.title}}",
+      "text": "{{story.text}}",
+      "author": "{{story.author}}",
+      "email": "{{story.email}}"
+    }
+
+  </script>
+
+  {{/unless}}
 
   <div id="errors"></div>
 
@@ -80,8 +98,15 @@
 <script>
   var myCodeMirror = CodeMirror(document.getElementById("editor"), {
     mode: "handlebars",
-    lineWrapping: true
+    lineWrapping: true,
+    value: story ? story.text : undefined
   });
+  
+  if(story){
+    
+    $(".preview").click();
+    
+  }
 
 </script>
 

@@ -155,7 +155,8 @@ setTimeout(function () {
               author: req.body.author,
               email: req.body.email,
               text: req.body.text,
-              key: key
+              key: key,
+              date: Math.round((new Date()).getTime() / 1000)
             },
             function (err, result) {
 

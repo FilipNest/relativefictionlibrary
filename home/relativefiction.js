@@ -179,7 +179,7 @@ $("body").on("click", ".localise", function (e) {
 
 });
 
-if ($("#story").length) {
+if ($(".loadup").length) {
 
   var text = $(".story").html();
 
