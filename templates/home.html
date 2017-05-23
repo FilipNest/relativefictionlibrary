@@ -8,7 +8,7 @@
 
     <h1>Relative Fiction</h1>
 
-    <p class="subheading">A tool for creating dynamic stories relative to a reader's place, time and location (via the Foursquare API), weather (OpenWeatherMap) and more (custom feeds for recent news etc). Write stories that feel like they're taking place where the reader is, science fiction with dates that don't age and lots more.</p>
+    <p class="subheading">A tool for creating dynamic stories relative to a reader's place, time and location (via the Foursquare API), weather (OpenWeatherMap) and more (custom feeds for recent news stories etc). Write stories that feel like they're taking place where the reader is, science fiction with dates and information that doesn't age and lots more.</p>
 
     <p>Free and open source. Below are basic instructions, <a href="https://github.com/FilipNest/relativefiction">visit the GitHub repository</a> for more (and to ask questions and submit requests). Head over to the <a href="/editor">write page</a> to give it a go yourself.</p>
 
@@ -136,7 +136,37 @@
         <button class="localise">Localise</button>
       </div>
       <small>Sunrise and sunset times are useful for conditionals to get day and night values.</small>
+    
+      <h2>External feeds</h2>
+    
+      <p>Relative Fiction supports XML feeds (RSS extra) and JSON feeds for you to customise your story. This is super powerful.</p>
+    
+      <h3>Getting the contents of a website</h3>
+    
+    <p>Use the <b>url</b> tag to print the contents of a url you pass in. This is a bit useless on its own but you can use it in contains queries (see conditionals below) like:</p>
 
+    <div class="codeblock">
+        <div class="inner">
+          {{#contains (url "https://en.wikipedia.org/wiki/Main_Page") "goat"}}The Wikipedia front page had goats on it.{{else}}There were no goats on the Wikipedia front page.{{/contains}}
+        </div>
+        <button class="localise">Localise</button>
+      </div>
+    
+      <br />
+    
+      <h3>Processing XML and JSON feeds</h3>
+    
+    <p>The <b>xml</b> and <b>json</b> tags are block tags so they come in opening and closing pairs. That's because they return lots of data rather than just one thing. Anything possible in the Handlebars template library (<a href="http://handlebarsjs.com">see the Handlebars docs</a>) is possible within the block so you can do conditionals and more based on anything in the fetched data. The following example gets the 1st top news story from the UK edition of BBC news.</p>
+    
+    <div class="codeblock">
+        <div class="inner">
+          I turned on the TV at {{hour12}}:{{minutes}}{{ampm}}. The news read "{{#xml (url "http://feeds.bbci.co.uk/news/rss.xml?edition=uk")}}{{channel.item.[0].title}}{{/xml}}". 
+        </div>
+        <button class="localise">Localise</button>
+      </div>
+    
+      <br />
+  
       <h2>Conditionals</h2>
 
       <p>This bit is slightly more complex so head over to <a href="https://github.com/FilipNest/relativefiction#conditionals">the documentation on GitHub</a>. You have <b>{{#more}}</b>, <b>{{#less}}</b>, <b>{{#equals}}</b>, <b>{{#not}}</b>, <b>{{#or}}</b> and <b>{{#and}}</b> to play with.</p>
