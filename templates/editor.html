@@ -9,6 +9,8 @@
 
   <p>Your story will appear below after localising (hit the button to localise).</p>
 
+  <p>Want to share your story with others? <a style="cursor:pointer;" id="save"><u>Save it to the library</u></a>. You'll be able to edit it later with a special (keep secret) url. You'll be asked for a name, email (only used if you forget your edit link) and title for the story and will be able to edit it later.</p>
+
   <div id="errors"></div>
 
   <section id="story">
@@ -27,6 +29,44 @@
 <script src="/codemirror/addon/mode/simple.js"></script>
 <script src="/codemirror/mode/handlebars/handlebars.js"></script>
 <link rel="stylesheet" href="/codemirror/lib/codemirror.css" />
+
+<script src="/vex/js/vex.combined.min.js"></script>
+<link rel="stylesheet" href="/vex/css/vex.css" />
+<link rel="stylesheet" href="/vex/css/vex-theme-default.css" />
+
+<script>
+  vex.defaultOptions.className = 'vex-theme-default';
+
+</script>
+
+<script>
+  $("#save").click(function() {
+
+    var inputs = "";
+    inputs += "<label for='author'>Author:</label> <input type='text' name='author' /><br />";
+    inputs += "<label for='title'>Story title:</label> <input type='text' name='title' /><br />";
+    inputs += "<label for='email'>Email address:</label> <input type='email' name='email' />";
+
+    vex.dialog.open({
+      message: "Thanks for your story, fill in the following and it'll upload to the library.",
+      input: inputs,
+      callback: function(data) {
+
+        data.text = myCodeMirror.getValue();
+
+        $.post("/save", data).done(function(response) {
+
+          window.location.href = "/editor/" + response.key
+
+        });
+
+      }
+    });
+
+  })
+
+</script>
+
 
 <style>
   .CodeMirror {

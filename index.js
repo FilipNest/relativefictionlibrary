@@ -16,7 +16,7 @@ var processStory = function (story) {
 
   return story;
 
-}
+};
 
 var fs = require("fs");
 
@@ -58,7 +58,7 @@ setTimeout(function () {
         footer: footer
       }));
 
-    })
+    });
 
     rf.server.get("/library", function (req, res) {
 
@@ -70,7 +70,7 @@ setTimeout(function () {
 
           storyList[story.title] = processStory(story);
 
-        })
+        });
 
         res.send(library({
           header: header,
@@ -78,9 +78,9 @@ setTimeout(function () {
           stories: storyList
         }));
 
-      })
+      });
 
-    })
+    });
 
     rf.server.get("/library/:story", function (req, res) {
 
@@ -102,9 +102,9 @@ setTimeout(function () {
 
         }
 
-      })
+      });
 
-    })
+    });
 
     rf.server.get("/editor", function (req, res) {
 
@@ -113,9 +113,70 @@ setTimeout(function () {
         footer: footer
       }));
 
-    })
+    });
+
+    rf.server.get("/editor/:key", function (req, res) {
+
+      // Fetch story
+
+      stories.findOne({
+        key: req.params.key
+      }, function (err, doc) {
+
+        if (doc) {
+
+          res.send(editor({
+            header: header,
+            footer: footer,
+            story: doc
+          }));
+
+        } else {
+
+          res.status(404).send("Not found");
+
+        }
+
+      })
+
+    });
+
+    rf.server.post("/save", function (req, res) {
+
+      if (req.body.title && req.body.author) {
+
+        // Generate key and save
+
+        require('crypto').randomBytes(48, function (err, buffer) {
+          var key = buffer.toString('hex');
+
+          stories.insert({
+              title: req.body.title,
+              author: req.body.author,
+              email: req.body.email,
+              text: req.body.text,
+              key: key
+            },
+            function (err, result) {
+
+              res.json({
+                key: key,
+                title: req.body.title
+              });
+
+            });
+
+        });
+
+      } else {
+
+        res.status(400).send("No title or author");
+
+      }
+
+
+    });
 
   });
 
 }, 1000);
-

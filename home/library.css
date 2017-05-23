@@ -8,6 +8,10 @@ html {
   font-family: "futura-pt";
 }
 
+label {
+  text-align: center;
+}
+
 nav {
   top: 0px;
   left: 0;
