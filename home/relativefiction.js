@@ -149,6 +149,12 @@ $("body").on("click", ".preview", function (e) {
 
     // Put in result
 
+    result.result = result.result.split("\n").map(function (paragraph, number) {
+
+      return "<p>" + paragraph + "</p>";
+
+    }).join("");
+
     $(".story").html(result.result);
 
   })

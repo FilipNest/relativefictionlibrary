@@ -19,7 +19,7 @@ nav {
   margin: 0px;
   color: white;
   position: fixed;
-  z-index: 2;
+  z-index: 5;
   width: 100%;
   max-width: 100%;
   line-height: 50px;

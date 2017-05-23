@@ -1,13 +1,21 @@
 {{{header}}}
 
 <main>
+  
+  {{#if story}}
+  
+  <h1 style="line-height:100%">Edit "{{story.title}}":</h1>
+  
+  <p>Bookmark this page to edit your story. Keep the url safe.</p>
+  
+  {{else}}
+  
+  <h1 style="line-height:100%">Write a story...</h1>
+  
+  {{/if}}
 
-  <p>Type your story below: <a href="https://github.com/FilipNest/relativefiction"><sup>(get help)</sup></a></p>
-
-  <section id="editor"></section>
-  <button class="preview">Localise</button>
-
-  <p>Your story will appear below after localising (hit the button to localise).</p>
+  
+  <p>Write in the editor below. To test tags and see what your story looks like locaised, press the button under the editor. Your localised story will then appear <a href="#localise">under the editor</a>. Unsure of how it works or have a question? <a href="https://github.com/FilipNest/relativefiction">Get help here</a>.</p>
 
   {{#unless story}}
 
@@ -19,10 +27,10 @@
 
   <script>
     var story = {
-      "title": "{{story.title}}",
-      "text": "{{story.text}}",
-      "author": "{{story.author}}",
-      "email": "{{story.email}}"
+      "title": `{{story.title}}`,
+      "text": `{{story.text}}`,
+      "author": `{{story.author}}`,
+      "email": `{{story.email}}`
     }
 
   </script>
@@ -30,6 +38,11 @@
   <p>Edit your text and <a style="cursor:pointer;" id="save"><u>update it in the library</u></a> when you're done.</p>
 
   {{/unless}}
+  
+  <section id="editor"></section>
+  <button id="localise" class="preview">Localise</button>
+  
+  <br />
 
   <div id="errors"></div>
 
@@ -66,10 +79,10 @@
 
     if (story) {
 
-      inputs += "<label for='author'>Author:</label> <input type='text' value='{{story.author}}' name='author' /><br />";
-      inputs += "<label for='title'>Story title:</label> <input type='text' value='{{story.title}}' name='title' /><br />";
-      inputs += "<label for='email'>Email address:</label> <input value='{{story.email}}' type='email' name='email' />";
-      inputs += "<input type='hidden' name='key' value='{{story.key}}'/>";
+      inputs += `<label for='author'>Author:</label> <input type='text' value='{{story.author}}' name='author' /><br />`;
+      inputs += `<label for='title'>Story title:</label> <input type='text' value='{{story.title}}' name='title' /><br />`;
+      inputs += `<label for='email'>Email address:</label> <input value='{{story.email}}' type='email' name='email' />`;
+      inputs += `<input type='hidden' name='key' value='{{story.key}}'/>`;
 
     } else {
 
