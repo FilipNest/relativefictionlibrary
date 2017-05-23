@@ -27,6 +27,8 @@
 
   </script>
 
+  <p>Edit your text and <a style="cursor:pointer;" id="save"><u>update it in the library</u></a> when you're done.</p>
+
   {{/unless}}
 
   <div id="errors"></div>
@@ -61,9 +63,21 @@
   $("#save").click(function() {
 
     var inputs = "";
-    inputs += "<label for='author'>Author:</label> <input type='text' name='author' /><br />";
-    inputs += "<label for='title'>Story title:</label> <input type='text' name='title' /><br />";
-    inputs += "<label for='email'>Email address:</label> <input type='email' name='email' />";
+
+    if (story) {
+
+      inputs += "<label for='author'>Author:</label> <input type='text' value='{{story.author}}' name='author' /><br />";
+      inputs += "<label for='title'>Story title:</label> <input type='text' value='{{story.title}}' name='title' /><br />";
+      inputs += "<label for='email'>Email address:</label> <input value='{{story.email}}' type='email' name='email' />";
+      inputs += "<input type='hidden' name='key' value='{{story.key}}'/>";
+
+    } else {
+
+      inputs += "<label for='author'>Author:</label> <input type='text' name='author' /><br />";
+      inputs += "<label for='title'>Story title:</label> <input type='text' name='title' /><br />";
+      inputs += "<label for='email'>Email address:</label> <input type='email' name='email' />";
+
+    }
 
     vex.dialog.open({
       message: "Thanks for your story, fill in the following and it'll upload to the library.",
@@ -101,11 +115,11 @@
     lineWrapping: true,
     value: story ? story.text : undefined
   });
-  
-  if(story){
-    
+
+  if (story) {
+
     $(".preview").click();
-    
+
   }
 
 </script>

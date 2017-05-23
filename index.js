@@ -143,38 +143,71 @@ setTimeout(function () {
 
     rf.server.post("/save", function (req, res) {
 
-      if (req.body.title && req.body.author) {
+      if (!req.body.key) {
 
-        // Generate key and save
+        if (req.body.title && req.body.author) {
 
-        require('crypto').randomBytes(48, function (err, buffer) {
-          var key = buffer.toString('hex');
+          // Generate key and save
 
-          stories.insert({
-              title: req.body.title,
-              author: req.body.author,
-              email: req.body.email,
-              text: req.body.text,
-              key: key,
-              date: Math.round((new Date()).getTime() / 1000)
-            },
-            function (err, result) {
+          require('crypto').randomBytes(48, function (err, buffer) {
+            var key = buffer.toString('hex');
 
-              res.json({
+            stories.insert({
+                title: req.body.title,
+                author: req.body.author,
+                email: req.body.email,
+                text: req.body.text,
                 key: key,
-                title: req.body.title
+                date: Math.round((new Date()).getTime() / 1000)
+              },
+              function (err, result) {
+
+                res.json({
+                  key: key,
+                  title: req.body.title
+                });
+
               });
 
-            });
+          });
 
-        });
+        } else {
+
+          res.status(400).send("No title or author");
+
+        }
 
       } else {
 
-        res.status(400).send("No title or author");
+        // Updating
+
+        if (req.body.title && req.body.author) {
+
+          stories.update({
+            key: req.body.key
+          }, {
+            $set: {
+              title: req.body.title,
+              author: req.body.author,
+              email: req.body.email,
+              text: req.body.text
+            }
+          }, function (err, result) {
+
+            res.json({
+              key: req.body.key,
+              title: req.body.title
+            });
+
+          });
+
+        } else {
+
+          res.status(400).send("No title or author");
+
+        }
 
       }
-
 
     });
 
