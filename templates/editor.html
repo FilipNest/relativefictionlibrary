@@ -1,20 +1,20 @@
 {{{header}}}
 
 <main>
-  
+
   {{#if story}}
-  
+
   <h1 style="line-height:100%">Edit "{{story.title}}":</h1>
-  
+
   <p>Bookmark this page to edit your story. Keep the url safe.</p>
-  
+
   {{else}}
-  
+
   <h1 style="line-height:100%">Write a story...</h1>
-  
+
   {{/if}}
 
-  
+
   <p>Write in the editor below. To test tags and see what your story looks like locaised, press the button under the editor. Your localised story will then appear <a href="#localise">under the editor</a>. Unsure of how it works or have a question? <a href="https://github.com/FilipNest/relativefiction">Get help here</a>.</p>
 
   {{#unless story}}
@@ -38,10 +38,10 @@
   <p>Edit your text and <a style="cursor:pointer;" id="save"><u>update it in the library</u></a> when you're done.</p>
 
   {{/unless}}
-  
+
   <section id="editor"></section>
   <button id="localise" class="preview">Localise</button>
-  
+
   <br />
 
   <div id="errors"></div>
@@ -97,13 +97,17 @@
       input: inputs,
       callback: function(data) {
 
-        data.text = myCodeMirror.getValue();
+        if (data) {
 
-        $.post("/save", data).done(function(response) {
+          data.text = myCodeMirror.getValue();
 
-          window.location.href = "/editor/" + response.key
+          $.post("/save", data).done(function(response) {
 
-        });
+            window.location.href = "/editor/" + response.key
+
+          });
+
+        }
 
       }
     });
