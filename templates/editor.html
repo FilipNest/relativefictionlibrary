@@ -130,7 +130,7 @@
   var myCodeMirror = CodeMirror(document.getElementById("editor"), {
     mode: "handlebars",
     lineWrapping: true,
-    value: story ? story.text : undefined
+    value: story && story.text ? story.text : ""
   });
 
   if (story) {
