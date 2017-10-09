@@ -1,4 +1,4 @@
-// Replace all words between curlies 
+// Replace all words between curlies
 
 $.each($(".codeblock"), function (index, inside) {
 
@@ -163,9 +163,9 @@ $("body").on("click", ".preview", function (e) {
 
 $("body").on("click", ".localise", function (e) {
 
-  var button = event.target;
+  var button = e.target;
 
-  var block = $(event.target).parent().find(".inner");
+  var block = $(e.target).parent().find(".inner");
 
   var data = {};
 
@@ -199,9 +199,9 @@ if ($(".loadup").length) {
 
 $("body").on("click", ".reset", function (e) {
 
-  var button = event.target;
+  var button = e.target;
 
-  var block = $(event.target).parent().find(".inner");
+  var block = $(e.target).parent().find(".inner");
 
   $(block).html($(block).attr("data-raw"));
 
