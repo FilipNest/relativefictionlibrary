@@ -62,7 +62,7 @@ setTimeout(function () {
 
     rf.server.get("/library", function (req, res) {
 
-      stories.find({}).toArray(function (err, docs) {
+      stories.find({}).sort({"date": -1}).toArray(function (err, docs) {
 
         var storyList = {};
 
