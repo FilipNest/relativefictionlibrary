@@ -1,5 +1,3 @@
-var MongoClient = require('mongodb').MongoClient;
-
 var moment = require("moment");
 
 var secrets = require("./secrets.js");
@@ -31,186 +29,182 @@ var story = Handlebars.compile(fs.readFileSync(__dirname + "/templates/story.htm
 var editor = Handlebars.compile(fs.readFileSync(__dirname + "/templates/editor.html", "utf8"));
 var footer = Handlebars.compile(fs.readFileSync(__dirname + "/templates/footer.html", "utf8"));
 
-setTimeout(function () {
 
-  MongoClient.connect(secrets.mongourl, function (err, db) {
 
-    var stories = db.collection('stories');
+const Datastore = require('nedb');
 
-    var config = {
-      port: 7788,
-      static: __dirname + "/home",
-      foursquareKey: secrets.foursquareKey,
-      foursquareSecret: secrets.foursquareSecret,
-      openWeatherKey: secrets.openWeatherKey
-    };
+const stories = new Datastore({ filename: 'stories.db', autoload: true });
 
-    Handlebars.registerHelper('raw-helper', function (options) {
-      return options.fn();
+var config = {
+  port: 7788,
+  static: __dirname + "/home",
+  foursquareKey: secrets.foursquareKey,
+  foursquareSecret: secrets.foursquareSecret,
+  openWeatherKey: secrets.openWeatherKey
+};
+
+Handlebars.registerHelper('raw-helper', function (options) {
+  return options.fn();
+});
+
+var rf = require("relativefiction")(config);
+
+rf.server.get("/", function (req, res) {
+
+  res.send(home({
+    header: header,
+    footer: footer
+  }));
+
+});
+
+rf.server.get("/library", function (req, res) {
+
+  stories.find({}).sort({ "date": -1 }).exec(function (err, docs) {
+
+    var storyList = {};
+
+    docs.forEach(function (story, index) {
+
+      storyList[story.title] = processStory(story);
+
     });
 
-    var rf = require("relativefiction")(config);
+    res.send(library({
+      header: header,
+      footer: footer,
+      stories: storyList
+    }));
 
-    rf.server.get("/", function (req, res) {
+  });
 
-      res.send(home({
+});
+
+rf.server.get("/library/:story", function (req, res) {
+
+  stories.findOne({
+    title: req.params.story
+  }, function (err, doc) {
+
+    if (doc) {
+
+      res.send(story({
         header: header,
-        footer: footer
+        footer: footer,
+        story: processStory(doc)
       }));
 
-    });
+    } else {
 
-    rf.server.get("/library", function (req, res) {
+      res.status(404).send("Not found");
 
-      stories.find({}).sort({"date": -1}).toArray(function (err, docs) {
+    }
 
-        var storyList = {};
+  });
 
-        docs.forEach(function (story, index) {
+});
 
-          storyList[story.title] = processStory(story);
+rf.server.get("/editor", function (req, res) {
 
-        });
+  res.send(editor({
+    header: header,
+    footer: footer
+  }));
 
-        res.send(library({
-          header: header,
-          footer: footer,
-          stories: storyList
-        }));
+});
 
-      });
+rf.server.get("/editor/:key", function (req, res) {
 
-    });
+  // Fetch story
 
-    rf.server.get("/library/:story", function (req, res) {
+  stories.findOne({
+    key: req.params.key
+  }, function (err, doc) {
 
-      stories.findOne({
-        title: req.params.story
-      }, function (err, doc) {
-
-        if (doc) {
-
-          res.send(story({
-            header: header,
-            footer: footer,
-            story: processStory(doc)
-          }));
-
-        } else {
-
-          res.status(404).send("Not found");
-
-        }
-
-      });
-
-    });
-
-    rf.server.get("/editor", function (req, res) {
+    if (doc) {
 
       res.send(editor({
         header: header,
-        footer: footer
+        footer: footer,
+        story: doc
       }));
 
-    });
+    } else {
 
-    rf.server.get("/editor/:key", function (req, res) {
+      res.status(404).send("Not found");
 
-      // Fetch story
+    }
 
-      stories.findOne({
-        key: req.params.key
-      }, function (err, doc) {
+  })
 
-        if (doc) {
+});
 
-          res.send(editor({
-            header: header,
-            footer: footer,
-            story: doc
-          }));
+rf.server.post("/save", function (req, res) {
 
-        } else {
+  if (!req.body.key) {
 
-          res.status(404).send("Not found");
+    if (req.body.title && req.body.author) {
 
-        }
+      // Generate key and save
 
-      })
+      require('crypto').randomBytes(48, function (err, buffer) {
+        var key = buffer.toString('hex');
 
-    });
-
-    rf.server.post("/save", function (req, res) {
-
-      if (!req.body.key) {
-
-        if (req.body.title && req.body.author) {
-
-          // Generate key and save
-
-          require('crypto').randomBytes(48, function (err, buffer) {
-            var key = buffer.toString('hex');
-
-            stories.insert({
-                title: req.body.title,
-                author: req.body.author,
-                email: req.body.email,
-                text: req.body.text,
-                key: key,
-                date: Math.round((new Date()).getTime() / 1000)
-              },
-              function (err, result) {
-
-                res.json({
-                  key: key,
-                  title: req.body.title
-                });
-
-              });
-
-          });
-
-        } else {
-
-          res.status(400).send("No title or author");
-
-        }
-
-      } else {
-
-        // Updating
-
-        if (req.body.title && req.body.author) {
-
-          stories.update({
-            key: req.body.key
-          }, {
-            $set: {
-              title: req.body.title,
-              author: req.body.author,
-              email: req.body.email,
-              text: req.body.text
-            }
-          }, function (err, result) {
+        stories.insert({
+          title: req.body.title,
+          author: req.body.author,
+          email: req.body.email,
+          text: req.body.text,
+          key: key,
+          date: Math.round((new Date()).getTime() / 1000)
+        },
+          function (err, result) {
 
             res.json({
-              key: req.body.key,
+              key: key,
               title: req.body.title
             });
 
           });
 
-        } else {
+      });
 
-          res.status(400).send("No title or author");
+    } else {
 
+      res.status(400).send("No title or author");
+
+    }
+
+  } else {
+
+    // Updating
+
+    if (req.body.title && req.body.author) {
+
+      stories.update({
+        key: req.body.key
+      }, {
+        $set: {
+          title: req.body.title,
+          author: req.body.author,
+          email: req.body.email,
+          text: req.body.text
         }
+      }, function (err, result) {
 
-      }
+        res.json({
+          key: req.body.key,
+          title: req.body.title
+        });
 
-    });
+      });
 
-  });
+    } else {
 
-}, 1000);
+      res.status(400).send("No title or author");
+
+    }
+
+  }
+
+});
