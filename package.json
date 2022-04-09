@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "handlebars": "^4.7.6",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "mongodb": "^2.2.36",
     "nedb": "^1.8.0",
     "relativefiction": "git+https://github.com/FilipNest/relativefiction.git"
